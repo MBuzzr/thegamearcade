@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Game Arcade | Play, Compete, Dominate</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Press Start 2P for Retro Arcade Vibes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arcade: ['"Press Start 2P"', 'monospace'],
+                    },
+                    colors: {
+                        arcadeDark: '#0a0915',
+                        arcadePanel: '#131127',
+                        neonPink: '#ff007f',
+                        neonCyan: '#00f0ff',
+                        neonPurple: '#9d00ff',
+                        neonYellow: '#ffe600',
+                    },
+                    boxShadow: {
+                        'neon-pink': '0 0 15px rgba(255, 0, 127, 0.6), inset 0 0 15px rgba(255, 0, 127, 0.2)',
+                        'neon-cyan': '0 0 15px rgba(0, 240, 255, 0.6), inset 0 0 15px rgba(0, 240, 255, 0.2)',
+                        'neon-purple': '0 0 15px rgba(157, 0, 255, 0.6), inset 0 0 15px rgba(157, 0, 255, 0.2)',
+                        'glow-pink': '0 0 25px rgba(255, 0, 127, 0.8)',
+                        'glow-cyan': '0 0 25px rgba(0, 240, 255, 0.8)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CRT Scanline Effect Overlay */
+        .crt::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 999;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+        .crt.disabled::after {
+            opacity: 0;
+            display: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0915;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9d00ff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #9d00ff;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff007f;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.7)); }
+            50% { opacity: 0.7; filter: drop-shadow(0 0 2px rgba(0, 240, 255, 0.3)); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        
+        .retro-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(157, 0, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(157, 0, 255, 0.1) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-arcadeDark text-gray-100 font-sans selection:bg-neonPink selection:text-white crt" id="body-container">
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-arcadeDark/90 backdrop-blur-md border-b border-neonPurple/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-neonPink to-neonCyan p-0.5 shadow-neon-pink group-hover:shadow-glow-cyan transition-all">
+                    <div class="w-full h-full bg-arcadeDark rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-gamepad text-neonCyan text-xl group-hover:rotate-12 transition-transform"></i>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-arcade text-lg sm:text-xl tracking-wider bg-gradient-to-r from-neonCyan via-neonPink to-neonYellow bg-clip-text text-transparent">
+                        THE GAME ARCADE
+                    </span>
+                    <span class="block text-[10px] text-neonCyan/70 tracking-widest uppercase font-mono">CYBERPUNK PLAYGROUND</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#hero" class="hover:text-neonCyan transition-colors">Home</a>
+                <a href="#games" class="hover:text-neonPink transition-colors">Arcade Floor</a>
+                <a href="#pricing" class="hover:text-neonCyan transition-colors">Tokens & Passes</a>
+                <a href="#leaderboard" class="hover:text-neonYellow transition-colors">Leaderboards</a>
+                <a href="#location" class="hover:text-neonPurple transition-colors">Location & Hours</a>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="hidden sm:flex items-center space-x-4">
+                <button id="crt-toggle" title="Toggle CRT Scanline Effect" class="px-3 py-2 rounded-lg border border-neonPurple/50 bg-arcadePanel text-neonPurple hover:text-white hover:bg-neonPurple/20 transition-all text-xs font-mono flex items-center gap-2 shadow-neon-purple">
+                    <i class="fa-solid fa-tv"></i> <span id="crt-status">CRT: ON</span>
+                </button>
+                <a href="#pricing" class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-neonPink to-neonPurple text-white font-bold text-xs uppercase tracking-wider shadow-neon-pink hover:shadow-glow-pink hover:scale-105 transition-all">
+                    Book Party
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden text-neonCyan text-2xl p-2 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-arcadePanel/95 border-b border-neonPurple/30 px-6 py-6 space-y-4">
+            <a href="#hero" class="block text-lg hover:text-neonCyan transition-colors">Home</a>
+            <a href="#games" class="block text-lg hover:text-neonPink transition-colors">Arcade Floor</a>
+            <a href="#pricing" class="block text-lg hover:text-neonCyan transition-colors">Tokens & Passes</a>
+            <a href="#leaderboard" class="block text-lg hover:text-neonYellow transition-colors">Leaderboards</a>
+            <a href="#location" class="block text-lg hover:text-neonPurple transition-colors">Location & Hours</a>
+            <div class="pt-4 flex flex-col gap-3">
+                <button id="crt-toggle-mobile" class="w-full py-3 rounded-lg border border-neonPurple/50 bg-arcadePanel text-neonPurple font-mono text-sm">
+                    <i class="fa-solid fa-tv"></i> Toggle CRT Scanlines
+                </button>
+                <a href="#pricing" class="w-full py-3 text-center rounded-lg bg-gradient-to-r from-neonPink to-neonPurple text-white font-bold uppercase tracking-wider shadow-neon-pink">
+                    Book Party
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 retro-grid overflow-hidden">
+        <!-- Glowing background lighting blobs -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neonPurple/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neonPink/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/2 right-1/3 w-80 h-80 bg-neonCyan/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10 space-y-8">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-arcadePanel/80 border border-neonCyan/40 text-neonCyan text-xs sm:text-sm font-mono shadow-neon-cyan animate-pulse-glow">
+                <span class="w-2 h-2 rounded-full bg-neonCyan animate-ping"></span>
+                <span>OPEN NOW • 200+ RETRO & MODERN CABINETS</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight uppercase leading-tight font-arcade text-white drop-shadow-[0_0_25px_rgba(255,0,127,0.5)]">
+                INSERT COIN <br/>
+                <span class="bg-gradient-to-r from-neonCyan via-neonPink to-neonYellow bg-clip-text text-transparent">TO CONTINUE</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-gray-300 text-base sm:text-lg md:text-xl font-light">
+                Step into the ultimate neon sanctuary. Vintage arcade classics, immersive VR simulators, multi-player fighting arenas, and state-of-the-art pinball tables.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-4">
+                <a href="#games" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-neonCyan to-blue-600 text-arcadeDark font-extrabold text-sm uppercase tracking-wider shadow-neon-cyan hover:shadow-glow-cyan hover:scale-105 transition-all text-center">
+                    <i class="fa-solid fa-gamepad mr-2"></i> Explore Arcade Floor
+                </a>
+                <a href="#pricing" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-arcadePanel border-2 border-neonPink text-neonPink font-extrabold text-sm uppercase tracking-wider shadow-neon-pink hover:bg-neonPink hover:text-white transition-all text-center">
+                    <i class="fa-solid fa-cake-candles mr-2"></i> Book A Party
+                </a>
+            </div>
+
+            <!-- Quick Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 max-w-4xl mx-auto">
+                <div class="bg-arcadePanel/80 border border-neonCyan/30 rounded-xl p-4 backdrop-blur-sm shadow-neon-cyan">
+                    <div class="font-arcade text-xl sm:text-2xl text-neonCyan">200+</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase">Arcade Machines</div>
+                </div>
+                <div class="bg-arcadePanel/80 border border-neonPink/30 rounded-xl p-4 backdrop-blur-sm shadow-neon-pink">
+                    <div class="font-arcade text-xl sm:text-2xl text-neonPink">16+</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase">Pinball Wizards</div>
+                </div>
+                <div class="bg-arcadePanel/80 border border-neonPurple/30 rounded-xl p-4 backdrop-blur-sm shadow-neon-purple">
+                    <div class="font-arcade text-xl sm:text-2xl text-neonPurple">VR</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase">Racing Pods</div>
+                </div>
+                <div class="bg-arcadePanel/80 border border-neonYellow/30 rounded-xl p-4 backdrop-blur-sm">
+                    <div class="font-arcade text-xl sm:text-2xl text-neonYellow">4.9★</div>
+                    <div class="text-xs text-gray-400 mt-1 uppercase">Gamer Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Games Section -->
+    <section id="games" class="py-24 px-4 sm:px-6 lg:px-8 relative max-w-7xl mx-auto">
+        <div class="text-center space-y-4 mb-16">
+            <span class="text-neonCyan font-mono uppercase tracking-widest text-sm bg-neonCyan/10 px-3 py-1 rounded-md border border-neonCyan/30">
+                // THE ARCADE FLOOR
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-arcade uppercase tracking-wide text-white">
+                Featured Cabinets
+            </h2>
+            <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                From vintage 80s pixel legends to modern high-speed simulators. Click on any game to check its legendary stats or simulate gameplay!
+            </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-12">
+            <button onclick="filterGames('all')" class="game-filter-btn active-filter px-5 py-2 rounded-lg bg-neonPink text-white font-bold text-xs uppercase tracking-wider shadow-neon-pink transition-all">All Games</button>
+            <button onclick="filterGames('retro')" class="game-filter-btn px-5 py-2 rounded-lg bg-arcadePanel border border-neonPurple/50 text-gray-300 hover:text-neonPurple hover:border-neonPurple font-bold text-xs uppercase tracking-wider transition-all">Retro Classics</button>
+            <button onclick="filterGames('pinball')" class="game-filter-btn px-5 py-2 rounded-lg bg-arcadePanel border border-neonCyan/50 text-gray-300 hover:text-neonCyan hover:border-neonCyan font-bold text-xs uppercase tracking-wider transition-all">Pinball</button>
+            <button onclick="filterGames('vr')" class="game-filter-btn px-5 py-2 rounded-lg bg-arcadePanel border border-neonYellow/50 text-gray-300 hover:text-neonYellow hover:border-neonYellow font-bold text-xs uppercase tracking-wider transition-all">VR Racing</button>
+            <button onclick="filterGames('fighting')" class="game-filter-btn px-5 py-2 rounded-lg bg-arcadePanel border border-neonPink/50 text-gray-300 hover:text-neonPink hover:border-neonPink font-bold text-xs uppercase tracking-wider transition-all">Fighting</button>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="games-grid">
+            <!-- Game 1 -->
+            <div class="game-card group bg-arcadePanel border border-neonPink/40 rounded-2xl overflow-hidden shadow-neon-pink hover:shadow-glow-pink transition-all duration-300 flex flex-col" data-category="retro">
+                <div class="relative h-56 overflow-hidden bg-gray-900">
+                    <img src="https://placehold.co/600x400/131127/ff007f?text=PAC-MAN+MANIA" alt="Pac-Man Mania" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/131127/ff007f?text=ARCADE+GAME'">
+                    <div class="absolute top-3 left-3 bg-arcadeDark/90 border border-neonPink text-neonPink text-[10px] font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        Retro Classic
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-neonYellow font-arcade text-xs px-2.5 py-1 rounded-md border border-neonYellow/40">
+                        HI: 999,990
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-arcade text-lg text-white mb-2 group-hover:text-neonPink transition-colors">PAC-MAN MANIA</h3>
+                        <p class="text-gray-400 text-sm">The legendary maze chase with a turbo twist. Navigate ghosts, collect power pellets, and climb the cabinet high score chart.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div class="text-xs font-mono text-gray-400"><i class="fa-solid fa-coins text-neonYellow mr-1"></i> 1 Token per Play</div>
+                        <button onclick="openGameModal('Pac-Man Mania', '999,990', 'Classic 1980 maze arcade cabinet equipped with modern tournament joysticks.')" class="px-4 py-2 rounded-lg bg-neonPink/20 border border-neonPink text-neonPink hover:bg-neonPink hover:text-white text-xs font-bold uppercase transition-all">
+                            Play Sim / Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 2 -->
+            <div class="game-card group bg-arcadePanel border border-neonCyan/40 rounded-2xl overflow-hidden shadow-neon-cyan hover:shadow-glow-cyan transition-all duration-300 flex flex-col" data-category="vr">
+                <div class="relative h-56 overflow-hidden bg-gray-900">
+                    <img src="https://placehold.co/600x400/131127/00f0ff?text=CYBER+DRIVE+VR" alt="Cyber Drive VR" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/131127/00f0ff?text=ARCADE+GAME'">
+                    <div class="absolute top-3 left-3 bg-arcadeDark/90 border border-neonCyan text-neonCyan text-[10px] font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        VR Racing
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-neonYellow font-arcade text-xs px-2.5 py-1 rounded-md border border-neonYellow/40">
+                        HI: 3:12.45
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-arcade text-lg text-white mb-2 group-hover:text-neonCyan transition-colors">CYBER DRIVE VR</h3>
+                        <p class="text-gray-400 text-sm">Full motion hydraulic racing rig with 4K VR headset. Rip through neon-drenched Tokyo synthwave highways at 250 MPH.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div class="text-xs font-mono text-gray-400"><i class="fa-solid fa-coins text-neonYellow mr-1"></i> 3 Tokens per Play</div>
+                        <button onclick="openGameModal('Cyber Drive VR', '3:12.45 (Track Record)', 'Hydraulic motion rig with 360-degree VR immersion and force-feedback steering wheel.')" class="px-4 py-2 rounded-lg bg-neonCyan/20 border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-arcadeDark text-xs font-bold uppercase transition-all">
+                            Play Sim / Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 3 -->
+            <div class="game-card group bg-arcadePanel border border-neonPurple/40 rounded-2xl overflow-hidden shadow-neon-purple hover:shadow-glow-pink transition-all duration-300 flex flex-col" data-category="pinball">
+                <div class="relative h-56 overflow-hidden bg-gray-900">
+                    <img src="https://placehold.co/600x400/131127/9d00ff?text=NEON+PINBALL+2099" alt="Neon Pinball 2099" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/131127/9d00ff?text=ARCADE+GAME'">
+                    <div class="absolute top-3 left-3 bg-arcadeDark/90 border border-neonPurple text-neonPurple text-[10px] font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        Pinball
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-neonYellow font-arcade text-xs px-2.5 py-1 rounded-md border border-neonYellow/40">
+                        HI: 45,200,100
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-arcade text-lg text-white mb-2 group-hover:text-neonPurple transition-colors">NEON PINBALL 2099</h3>
+                        <p class="text-gray-400 text-sm">Custom multi-ball pinball table with digital holographic displays, bumper lasers, and synth soundtrack reactive lights.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div class="text-xs font-mono text-gray-400"><i class="fa-solid fa-coins text-neonYellow mr-1"></i> 1 Token per Play</div>
+                        <button onclick="openGameModal('Neon Pinball 2099', '45,200,100', 'State-of-the-art solid-state pinball cabinet with custom multi-ball multiburner.')" class="px-4 py-2 rounded-lg bg-neonPurple/20 border border-neonPurple text-neonPurple hover:bg-neonPurple hover:text-white text-xs font-bold uppercase transition-all">
+                            Play Sim / Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 4 -->
+            <div class="game-card group bg-arcadePanel border border-neonYellow/40 rounded-2xl overflow-hidden shadow-neon-cyan hover:shadow-glow-pink transition-all duration-300 flex flex-col" data-category="fighting">
+                <div class="relative h-56 overflow-hidden bg-gray-900">
+                    <img src="https://placehold.co/600x400/131127/ffe600?text=STREET+BRAWL+X" alt="Street Brawl X" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/131127/ffe600?text=ARCADE+GAME'">
+                    <div class="absolute top-3 left-3 bg-arcadeDark/90 border border-neonYellow text-neonYellow text-[10px] font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        Fighting
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-neonYellow font-arcade text-xs px-2.5 py-1 rounded-md border border-neonYellow/40">
+                        HI: 88,400 pts
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-arcade text-lg text-white mb-2 group-hover:text-neonYellow transition-colors">STREET BRAWL X</h3>
+                        <p class="text-gray-400 text-sm">Competitive 2-player arcade cabinet with Sanwa buttons and mechanical sticks. Execute epic combos and finish your rival.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div class="text-xs font-mono text-gray-400"><i class="fa-solid fa-coins text-neonYellow mr-1"></i> 2 Tokens per Play</div>
+                        <button onclick="openGameModal('Street Brawl X', '88,400 pts', '1v1 Head-to-Head upright cabinet with mechanical dual joysticks and stereo subwoofers.')" class="px-4 py-2 rounded-lg bg-neonYellow/20 border border-neonYellow text-neonYellow hover:bg-neonYellow hover:text-arcadeDark text-xs font-bold uppercase transition-all">
+                            Play Sim / Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 5 -->
+            <div class="game-card group bg-arcadePanel border border-neonPink/40 rounded-2xl overflow-hidden shadow-neon-pink hover:shadow-glow-pink transition-all duration-300 flex flex-col" data-category="retro">
+                <div class="relative h-56 overflow-hidden bg-gray-900">
+                    <img src="https://placehold.co/600x400/131127/ff007f?text=SPACE+INVADERS+ULTRA" alt="Space Invaders Ultra" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/131127/ff007f?text=ARCADE+GAME'">
+                    <div class="absolute top-3 left-3 bg-arcadeDark/90 border border-neonPink text-neonPink text-[10px] font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        Retro Classic
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-neonYellow font-arcade text-xs px-2.5 py-1 rounded-md border border-neonYellow/40">
+                        HI: 1,504,200
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-arcade text-lg text-white mb-2 group-hover:text-neonPink transition-colors">SPACE INVADERS ULTRA</h3>
+                        <p class="text-gray-400 text-sm">Original 1978 vertical arcade cabinet with custom glowing bezel and coin door. Defend Earth from endless alien waves.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div class="text-xs font-mono text-gray-400"><i class="fa-solid fa-coins text-neonYellow mr-1"></i> 1 Token per Play</div>
+                        <button onclick="openGameModal('Space Invaders Ultra', '1,504,200', 'Original restored woodgrain upright cabinet with authentic CRT monitor.')" class="px-4 py-2 rounded-lg bg-neonPink/20 border border-neonPink text-neonPink hover:bg-neonPink hover:text-white text-xs font-bold uppercase transition-all">
+                            Play Sim / Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 6 -->
+            <div class="game-card group bg-arcadePanel border border-neonCyan/40 rounded-2xl overflow-hidden shadow-neon-cyan hover:shadow-glow-cyan transition-all duration-300 flex flex-col" data-category="vr">
+                <div class="relative h-56 overflow-hidden bg-gray-900">
+                    <img src="https://placehold.co/600x400/131127/00f0ff?text=GALAXY+BLASTER+VR" alt="Galaxy Blaster VR" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/131127/00f0ff?text=ARCADE+GAME'">
+                    <div class="absolute top-3 left-3 bg-arcadeDark/90 border border-neonCyan text-neonCyan text-[10px] font-mono px-2.5 py-1 rounded-md uppercase tracking-wider">
+                        VR Racing
+                    </div>
+                    <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-neonYellow font-arcade text-xs px-2.5 py-1 rounded-md border border-neonYellow/40">
+                        HI: 742,900
+                    </div>
+                </div>
+                <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="font-arcade text-lg text-white mb-2 group-hover:text-neonCyan transition-colors">GALAXY BLASTER VR</h3>
+                        <p class="text-gray-400 text-sm">360-degree free roaming arena shooter with haptic vests and plasma blasters. Team up to defeat the alien Mothership.</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                        <div class="text-xs font-mono text-gray-400"><i class="fa-solid fa-coins text-neonYellow mr-1"></i> 4 Tokens per Play</div>
+                        <button onclick="openGameModal('Galaxy Blaster VR', '742,900', 'Full-body wireless VR arena with haptic jacket feedback and rifle controllers.')" class="px-4 py-2 rounded-lg bg-neonCyan/20 border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-arcadeDark text-xs font-bold uppercase transition-all">
+                            Play Sim / Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Token & Pricing Section -->
+    <section id="pricing" class="py-24 px-4 sm:px-6 lg:px-8 relative bg-arcadePanel/50 border-y border-neonPurple/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <span class="text-neonPurple font-mono uppercase tracking-widest text-sm bg-neonPurple/10 px-3 py-1 rounded-md border border-neonPurple/30">
+                    // CREDITS & VIP ACCESS
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-arcade uppercase tracking-wide text-white">
+                    Tokens & Party Packages
+                </h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                    Load up your arcade card for maximum playtime or book an unforgettable birthday party or private corporate tournament.
+                </p>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tier 1 -->
+                <div class="bg-arcadePanel border border-neonCyan/30 rounded-3xl p-8 flex flex-col justify-between shadow-neon-cyan relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-arcadeDark border border-neonCyan text-neonCyan font-mono text-xs px-4 py-1 rounded-full uppercase tracking-widest">
+                        Arcade Starter
+                    </div>
+                    <div class="space-y-6 pt-4">
+                        <h3 class="font-arcade text-2xl text-white text-center">20 TOKENS</h3>
+                        <div class="text-center">
+                            <span class="text-4xl sm:text-5xl font-extrabold text-neonCyan font-arcade">$15</span>
+                            <span class="text-gray-400 text-sm block mt-1">($0.75 per token)</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonCyan"></i> Valid on all retro arcade cabinets</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonCyan"></i> Standard high score save</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonCyan"></i> Non-expiring arcade card</li>
+                        </ul>
+                    </div>
+                    <div class="pt-8">
+                        <button onclick="openBookingModal('Arcade Starter ($15 - 20 Tokens)')" class="w-full py-3.5 rounded-xl bg-neonCyan/20 border border-neonCyan text-neonCyan font-bold uppercase tracking-wider hover:bg-neonCyan hover:text-arcadeDark transition-all">
+                            Buy Tokens
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 2 - VIP Best Value -->
+                <div class="bg-arcadePanel border-2 border-neonPink rounded-3xl p-8 flex flex-col justify-between shadow-neon-pink relative scale-105 z-10 bg-gradient-to-b from-arcadePanel to-[#1f0d24]">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-neonPink text-white font-mono text-xs px-4 py-1 rounded-full uppercase tracking-widest shadow-glow-pink">
+                        🔥 Most Popular VIP
+                    </div>
+                    <div class="space-y-6 pt-4">
+                        <h3 class="font-arcade text-2xl text-white text-center">VIP DAY PASS</h3>
+                        <div class="text-center">
+                            <span class="text-4xl sm:text-5xl font-extrabold text-neonPink font-arcade">$35</span>
+                            <span class="text-gray-400 text-sm block mt-1">Unlimited Play All Day</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-200">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPink"></i> Unlimited retro & pinball play</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPink"></i> 2 free VR Racing simulator tokens</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPink"></i> Priority line access on weekends</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPink"></i> Free arcade lanyard included</li>
+                        </ul>
+                    </div>
+                    <div class="pt-8">
+                        <button onclick="openBookingModal('VIP Day Pass ($35 - Unlimited)')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neonPink to-neonPurple text-white font-bold uppercase tracking-wider shadow-neon-pink hover:shadow-glow-pink hover:scale-105 transition-all">
+                            Get VIP Pass
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="bg-arcadePanel border border-neonPurple/30 rounded-3xl p-8 flex flex-col justify-between shadow-neon-purple relative">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-arcadeDark border border-neonPurple text-neonPurple font-mono text-xs px-4 py-1 rounded-full uppercase tracking-widest">
+                        Birthday Party Bash
+                    </div>
+                    <div class="space-y-6 pt-4">
+                        <h3 class="font-arcade text-2xl text-white text-center">PARTY BASH</h3>
+                        <div class="text-center">
+                            <span class="text-4xl sm:text-5xl font-extrabold text-neonPurple font-arcade">$250</span>
+                            <span class="text-gray-400 text-sm block mt-1">Up to 10 Gamers ($25/extra)</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPurple"></i> 2-hour private neon party room</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPurple"></i> 30 tokens per guest</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPurple"></i> Pizza & unlimited arcade soda</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-neonPurple"></i> Dedicated party game marshal</li>
+                        </ul>
+                    </div>
+                    <div class="pt-8">
+                        <button onclick="openBookingModal('Birthday Party Bash ($250)')" class="w-full py-3.5 rounded-xl bg-neonPurple/20 border border-neonPurple text-neonPurple font-bold uppercase tracking-wider hover:bg-neonPurple hover:text-white transition-all">
+                            Book Party Room
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Arcade Leaderboard Section -->
+    <section id="leaderboard" class="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+        <div class="text-center space-y-4 mb-16">
+            <span class="text-neonYellow font-mono uppercase tracking-widest text-sm bg-neonYellow/10 px-3 py-1 rounded-md border border-neonYellow/30">
+                // HALL OF FAME
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-arcade uppercase tracking-wide text-white">
+                Global Leaderboard
+            </h2>
+            <p class="text-gray-400 max-w-xl mx-auto text-sm sm:text-base">
+                Set a high score on our arcade floor or submit your initials right here to join the legendary AAA hall of fame!
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <!-- High Score Table -->
+            <div class="lg:col-span-2 bg-arcadePanel border border-neonYellow/30 rounded-2xl overflow-hidden shadow-lg p-6 sm:p-8">
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+                    <h3 class="font-arcade text-lg text-neonYellow"><i class="fa-solid fa-trophy mr-2"></i> Top Scores Today</h3>
+                    <span class="text-xs font-mono text-gray-400">RESET IN 14H 22M</span>
+                </div>
+
+                <div class="space-y-3" id="leaderboard-list">
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-900/60 border border-neonYellow/20">
+                        <div class="flex items-center space-x-4">
+                            <span class="font-arcade text-neonYellow text-sm w-6">#1</span>
+                            <span class="font-arcade text-white tracking-widest text-base bg-arcadeDark px-3 py-1 rounded border border-gray-800">ZAP</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-arcade text-neonCyan text-sm">2,450,900</span>
+                            <span class="block text-[10px] font-mono text-gray-400">Pac-Man Mania</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                        <div class="flex items-center space-x-4">
+                            <span class="font-arcade text-gray-400 text-sm w-6">#2</span>
+                            <span class="font-arcade text-white tracking-widest text-base bg-arcadeDark px-3 py-1 rounded border border-gray-800">KRY</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-arcade text-neonPink text-sm">1,980,450</span>
+                            <span class="block text-[10px] font-mono text-gray-400">Street Brawl X</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                        <div class="flex items-center space-x-4">
+                            <span class="font-arcade text-gray-400 text-sm w-6">#3</span>
+                            <span class="font-arcade text-white tracking-widest text-base bg-arcadeDark px-3 py-1 rounded border border-gray-800">NEO</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-arcade text-neonPurple text-sm">1,504,200</span>
+                            <span class="block text-[10px] font-mono text-gray-400">Space Invaders</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                        <div class="flex items-center space-x-4">
+                            <span class="font-arcade text-gray-400 text-sm w-6">#4</span>
+                            <span class="font-arcade text-white tracking-widest text-base bg-arcadeDark px-3 py-1 rounded border border-gray-800">SYN</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-arcade text-neonYellow text-sm">985,000</span>
+                            <span class="block text-[10px] font-mono text-gray-400">Cyber Drive VR</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                        <div class="flex items-center space-x-4">
+                            <span class="font-arcade text-gray-400 text-sm w-6">#5</span>
+                            <span class="font-arcade text-white tracking-widest text-base bg-arcadeDark px-3 py-1 rounded border border-gray-800">ACE</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-arcade text-neonCyan text-sm">840,100</span>
+                            <span class="block text-[10px] font-mono text-gray-400">Neon Pinball</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Score Form (AAA Style) -->
+            <div class="bg-arcadePanel border border-neonCyan/30 rounded-2xl p-6 sm:p-8 shadow-neon-cyan">
+                <h3 class="font-arcade text-sm text-neonCyan mb-4"><i class="fa-solid fa-keyboard mr-2"></i> Submit Your Score</h3>
+                <form id="score-form" onsubmit="submitHighScore(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase">Your 3-Letter Initials (AAA)</label>
+                        <input type="text" id="initials-input" maxlength="3" required placeholder="AAA" class="w-full bg-arcadeDark border-2 border-neonCyan/50 rounded-xl px-4 py-3 text-center font-arcade text-2xl text-white uppercase tracking-widest focus:outline-none focus:border-neonCyan shadow-neon-cyan">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase">Score</label>
+                        <input type="number" id="score-input" required placeholder="1500000" class="w-full bg-arcadeDark border border-gray-700 rounded-xl px-4 py-3 font-mono text-white focus:outline-none focus:border-neonCyan">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase">Game Title</label>
+                        <select id="game-select" class="w-full bg-arcadeDark border border-gray-700 rounded-xl px-4 py-3 font-mono text-white focus:outline-none focus:border-neonCyan">
+                            <option value="Pac-Man Mania">Pac-Man Mania</option>
+                            <option value="Cyber Drive VR">Cyber Drive VR</option>
+                            <option value="Neon Pinball 2099">Neon Pinball 2099</option>
+                            <option value="Street Brawl X">Street Brawl X</option>
+                            <option value="Space Invaders Ultra">Space Invaders Ultra</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neonCyan to-blue-600 text-arcadeDark font-extrabold text-xs uppercase tracking-wider shadow-neon-cyan hover:shadow-glow-cyan transition-all">
+                        Submit Initials
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location & Hours Section -->
+    <section id="location" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="bg-arcadePanel border border-neonPurple/40 rounded-3xl overflow-hidden shadow-neon-purple grid grid-cols-1 lg:grid-cols-2">
+            <!-- Info Side -->
+            <div class="p-8 sm:p-12 flex flex-col justify-between space-y-8">
+                <div class="space-y-4">
+                    <span class="text-neonPurple font-mono uppercase tracking-widest text-sm bg-neonPurple/10 px-3 py-1 rounded-md border border-neonPurple/30">
+                        // FIND THE PORTAL
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-arcade uppercase text-white">
+                        Location & Hours
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base">
+                        Conveniently located in downtown's neon entertainment district with ample parking and subway access right outside.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-neonPurple/20 border border-neonPurple flex items-center justify-center flex-shrink-0 text-neonPurple">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm sm:text-base">Address</h4>
+                            <p class="text-gray-400 text-sm mt-0.5">808 Cyberpunk Avenue, Sector 4, Downtown</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-neonCyan/20 border border-neonCyan flex items-center justify-center flex-shrink-0 text-neonCyan">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm sm:text-base">Hours of Operation</h4>
+                            <p class="text-gray-400 text-sm mt-0.5">Mon - Thu: 2:00 PM – 12:00 AM</p>
+                            <p class="text-gray-400 text-sm">Fri - Sat: 12:00 PM – 02:00 AM</p>
+                            <p class="text-gray-400 text-sm">Sun: 12:00 PM – 11:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 rounded-xl bg-neonPink/20 border border-neonPink flex items-center justify-center flex-shrink-0 text-neonPink">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm sm:text-base">Contact Hotline</h4>
+                            <p class="text-gray-400 text-sm mt-0.5">+1 (555) 888-GAME</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span class="font-mono text-emerald-400 text-xs font-bold uppercase tracking-wider">Status: Open Now (Closing at Midnight)</span>
+                    </div>
+                    <a href="https://maps.google.com" target="_blank" class="text-xs font-mono text-neonCyan hover:underline flex items-center gap-1">
+                        Open in Maps <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Simulated Map Visual Side -->
+            <div class="relative bg-gray-900 min-h-[350px] lg:min-h-full flex items-center justify-center overflow-hidden border-t lg:border-t-0 lg:border-l border-neonPurple/30 retro-grid">
+                <!-- Map Simulation UI -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-arcadeDark/80 via-transparent to-arcadeDark/40"></div>
+                
+                <div class="relative z-10 text-center p-8 max-w-sm space-y-4 bg-arcadePanel/90 border border-neonPurple/50 rounded-2xl backdrop-blur-md shadow-neon-purple">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-neonPurple/20 border-2 border-neonPurple flex items-center justify-center text-neonPurple text-2xl shadow-neon-purple animate-bounce">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <h3 class="font-arcade text-lg text-white">THE GAME ARCADE</h3>
+                    <p class="text-xs text-gray-300">Downtown Entertainment Hub, 2nd Block from Central Metro Station.</p>
+                    <div class="pt-2">
+                        <a href="https://maps.google.com" target="_blank" class="inline-block w-full py-2.5 rounded-lg bg-neonPurple text-white font-bold text-xs uppercase tracking-wider shadow-neon-purple hover:scale-105 transition-transform">
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Decorative radar scanner pulse ring -->
+                <div class="absolute w-72 h-72 border border-neonCyan/30 rounded-full animate-ping pointer-events-none"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-arcadeDark border-t border-neonPurple/30 py-12 px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-neonPink to-neonCyan p-0.5">
+                    <div class="w-full h-full bg-arcadeDark rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-gamepad text-neonCyan text-sm"></i>
+                    </div>
+                </div>
+                <span class="font-arcade text-sm text-white tracking-wider">THE GAME ARCADE</span>
+            </div>
+            
+            <p class="text-xs text-gray-500">
+                © 2026 The Game Arcade Inc. All rights reserved. Insert coin to play responsibly.
+            </p>
+
+            <div class="flex items-center space-x-4 text-gray-400 text-lg">
+                <a href="#" class="hover:text-neonPink transition-colors"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="hover:text-neonCyan transition-colors"><i class="fa-brands fa-twitch"></i></a>
+                <a href="#" class="hover:text-neonYellow transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-neonPurple transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Simulation / Info Modal -->
+    <div id="game-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="bg-arcadePanel border-2 border-neonCyan rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-neon-cyan relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeGameModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="space-y-6">
+                <div class="inline-block bg-neonCyan/10 border border-neonCyan/40 text-neonCyan text-xs font-mono px-3 py-1 rounded uppercase">
+                    Cabinet Simulator & Specs
+                </div>
+                <h3 id="modal-title" class="font-arcade text-2xl text-white">Game Title</h3>
+                <p id="modal-desc" class="text-gray-300 text-sm leading-relaxed">Cabinet description details...</p>
+                <div class="bg-arcadeDark p-4 rounded-xl border border-gray-800 space-y-2 font-mono text-xs">
+                    <div class="flex justify-between text-gray-400"><span>Current High Score:</span> <span id="modal-hiscore" class="text-neonYellow font-bold">999,990</span></div>
+                    <div class="flex justify-between text-gray-400"><span>Cabinet Status:</span> <span class="text-emerald-400 font-bold">READY TO PLAY</span></div>
+                </div>
+                <div class="flex gap-4 pt-2">
+                    <button onclick="simulatePlay()" class="flex-1 py-3.5 rounded-xl bg-neonCyan text-arcadeDark font-extrabold text-xs uppercase tracking-wider shadow-neon-cyan hover:scale-105 transition-all">
+                        <i class="fa-solid fa-play mr-2"></i> Insert Coin & Play
+                    </button>
+                    <button onclick="closeGameModal()" class="px-6 py-3.5 rounded-xl bg-gray-800 text-gray-300 font-bold text-xs uppercase tracking-wider hover:bg-gray-700 transition-all">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking / Purchase Notification Modal -->
+    <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="bg-arcadePanel border-2 border-neonPink rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-neon-pink relative">
+            <button onclick="closeBookingModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="space-y-6 text-center">
+                <div class="w-16 h-16 mx-auto rounded-full bg-neonPink/20 border-2 border-neonPink flex items-center justify-center text-neonPink text-2xl shadow-neon-pink">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+                <h3 class="font-arcade text-xl text-white" id="booking-modal-title">Confirm Booking</h3>
+                <p class="text-gray-300 text-sm">You are moments away from securing your arcade session or party package. Enter your details below to proceed.</p>
+                
+                <div class="space-y-3 text-left">
+                    <input type="text" placeholder="Full Name" class="w-full bg-arcadeDark border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonPink">
+                    <input type="email" placeholder="Email Address" class="w-full bg-arcadeDark border border-gray-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonPink">
+                    <input type="date" class="w-full bg-arcadeDark border border-gray-700 rounded-xl px-4 py-3 text-sm text-gray-400 focus:outline-none focus:border-neonPink">
+                </div>
+
+                <button onclick="completeBooking()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-neonPink to-neonPurple text-white font-extrabold text-xs uppercase tracking-wider shadow-neon-pink hover:shadow-glow-pink transition-all">
+                    Complete Reservation
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Box (Alternative to alert) -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-arcadePanel border-2 border-neonCyan text-white px-6 py-4 rounded-2xl shadow-neon-cyan flex items-center space-x-3 transition-all animate-bounce">
+        <i class="fa-solid fa-circle-check text-neonCyan text-xl"></i>
+        <div>
+            <h4 class="font-arcade text-xs text-neonCyan" id="toast-title">SUCCESS</h4>
+            <p class="text-xs text-gray-300" id="toast-msg">Action completed successfully.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // CRT Toggle functionality
+        const bodyContainer = document.getElementById('body-container');
+        const crtToggle = document.getElementById('crt-toggle');
+        const crtToggleMobile = document.getElementById('crt-toggle-mobile');
+        const crtStatus = document.getElementById('crt-status');
+
+        function toggleCRT() {
+            bodyContainer.classList.toggle('disabled');
+            const isDisabled = bodyContainer.classList.contains('disabled');
+            crtStatus.textContent = isDisabled ? "CRT: OFF" : "CRT: ON";
+            showToast("CRT Filter", isDisabled ? "CRT scanlines disabled" : "CRT scanlines enabled");
+        }
+
+        crtToggle.addEventListener('click', toggleCRT);
+        crtToggleMobile.addEventListener('click', toggleCRT);
+
+        // Filter Games
+        function filterGames(category) {
+            const buttons = document.querySelectorAll('.game-filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active-filter', 'bg-neonPink', 'shadow-neon-pink');
+                btn.classList.add('bg-arcadePanel', 'border', 'border-neonPurple/50', 'text-gray-300');
+            });
+            event.target.classList.add('active-filter', 'bg-neonPink', 'text-white', 'shadow-neon-pink');
+            event.target.classList.remove('bg-arcadePanel', 'border', 'border-neonPurple/50', 'text-gray-300');
+
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                if(category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Game Modal
+        const gameModal = document.getElementById('game-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalHiScore = document.getElementById('modal-hiscore');
+
+        function openGameModal(title, hiscore, desc) {
+            modalTitle.textContent = title;
+            modalDesc.textContent = desc;
+            modalHiScore.textContent = hiscore;
+            gameModal.classList.remove('hidden');
+            gameModal.classList.add('flex');
+        }
+
+        function closeGameModal() {
+            gameModal.classList.add('hidden');
+            gameModal.classList.remove('flex');
+        }
+
+        function simulatePlay() {
+            closeGameModal();
+            showToast("Simulation Started", "Inserting coin... 3, 2, 1, GO! Enjoy your arcade session.");
+        }
+
+        // Booking Modal
+        const bookingModal = document.getElementById('booking-modal');
+        const bookingModalTitle = document.getElementById('booking-modal-title');
+
+        function openBookingModal(packageName) {
+            bookingModalTitle.textContent = "Book: " + packageName;
+            bookingModal.classList.remove('hidden');
+            bookingModal.classList.add('flex');
+        }
+
+        function closeBookingModal() {
+            bookingModal.classList.add('hidden');
+            bookingModal.classList.remove('flex');
+        }
+
+        function completeBooking() {
+            closeBookingModal();
+            showToast("Reservation Confirmed!", "Check your email for tickets and party passes.");
+        }
+
+        // Leaderboard Submission
+        function submitHighScore(e) {
+            e.preventDefault();
+            const initials = document.getElementById('initials-input').value.toUpperCase();
+            const score = document.getElementById('score-input').value;
+            const game = document.getElementById('game-select').value;
+
+            if(initials.length !== 3) {
+                showToast("Error", "Initials must be exactly 3 characters (AAA format).");
+                return;
+            }
+
+            const list = document.getElementById('leaderboard-list');
+            const newItem = document.createElement('div');
+            newItem.className = "flex items-center justify-between p-3.5 rounded-xl bg-gray-900/60 border border-neonYellow/40 animate-pulse";
+            newItem.innerHTML = `
+                <div class="flex items-center space-x-4">
+                    <span class="font-arcade text-neonYellow text-sm w-6">NEW</span>
+                    <span class="font-arcade text-white tracking-widest text-base bg-arcadeDark px-3 py-1 rounded border border-gray-800">${initials}</span>
+                </div>
+                <div class="text-right">
+                    <span class="font-arcade text-neonYellow text-sm">${Number(score).toLocaleString()}</span>
+                    <span class="block text-[10px] font-mono text-gray-400">${game}</span>
+                </div>
+            `;
+            list.prepend(newItem);
+
+            document.getElementById('score-form').reset();
+            showToast("Score Submitted!", `High score recorded for ${initials} on ${game}!`);
+        }
+
+        // Toast Notification Helper
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
