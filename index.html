@@ -23,11 +23,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TheGameArcade | Deluxe Retrogaming</title>
-<meta name="description" content="Plug & play master collections for 120+ systems, including Arcade, Nintendo, Sega and Atari, plus Visual & Future Pinball setups. From $10/month or $200 lifetime.">
+<meta name="description" content="1000+ ready-to-play Visual & Future Pinball tables, plus plug & play collections for 120+ systems including Arcade, Nintendo, Sega and Atari. From $10/month or $200 lifetime.">
 <link rel="canonical" href="https://thegamearcade.top/">
 <meta name="theme-color" content="#07040f">
 <meta property="og:title" content="TheGameArcade | Deluxe Retrogaming">
-<meta property="og:description" content="Plug & play master collections for 120+ systems and Visual & Future Pinball setups.">
+<meta property="og:description" content="1000+ ready-to-play Visual & Future Pinball tables, plus plug & play collections for 120+ systems.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thegamearcade.top/">
 <!-- TODO: bg.webp is used as the share image for now. Replace with a 1200x630 image (e.g. og-image.jpg) for best results on WhatsApp/Facebook/X. -->
@@ -109,11 +109,6 @@
   #systems .grid { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 22px; }
   #systems .card h3 { line-height: 1.1; min-height: 2.2em; }
   #systems .card { --accent: var(--cyan); position: relative; overflow: hidden; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
-  #systems .card:nth-child(2) { --accent: var(--pink); }
-  #systems .card:nth-child(3) { --accent: var(--yellow); }
-  #systems .card:nth-child(4) { --accent: #c58cff; }
-  #systems .card:nth-child(5) { --accent: var(--lime); }
-  #systems .card:nth-child(6) { --accent: #4da3ff; }
   #systems .card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
   #systems .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 0 30px color-mix(in srgb, var(--accent) 8%, transparent); }
   #systems .foot a { color: var(--accent); }
@@ -227,6 +222,11 @@
   .consent .c-decline:hover { background: rgba(0,240,255,0.08); }
   .link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--cyan); cursor: pointer; }
   .link-btn:hover { text-decoration: underline; }
+  /* short gameplay clips (shown only when the clip files exist) */
+  .clips { display: none; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 760px; margin: 0 auto 28px; }
+  .clips.show { display: grid; }
+  .clips video { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; background: #000; border: 1px solid var(--cyan); border-radius: 10px; box-shadow: 0 0 18px rgba(0,240,255,0.25); }
+  @media (max-width: 620px) { .clips { grid-template-columns: 1fr; } }
   .legal { max-width: 720px; margin: 14px auto 0; font-size: 18px; opacity: .8; }
   /* keep text crisp over the busy background image */
   h1, h2, .lead, .sub, .note, .coffee, .trust, footer { text-shadow: 0 2px 10px rgba(7,4,15,0.95), 0 0 2px rgba(7,4,15,0.9); }</style>
@@ -235,7 +235,7 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="alien" viewBox="0 0 11 8" shape-rendering="crispEdges" fill="#39ff14"><rect x="2" y="0" width="1" height="1"/><rect x="8" y="0" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/></symbol></svg>
 <a class="skip" href="#top">Skip to content</a>
 
-<div class="ticker" aria-hidden="true"><div class="ticker-track"><div class="ticker-seg"><span>120+ SYSTEMS</span><span class="tk-sep">✦</span><span>THOUSANDS OF VIDEOGAMES</span><span class="tk-sep">✦</span><span>1000+ PINBALL TABLES</span><span class="tk-sep">✦</span><span>ARCADE · NINTENDO · SEGA · ATARI</span><span class="tk-sep">✦</span><span>VISUAL & FUTURE PINBALL</span><span class="tk-sep">✦</span><span>INSTANT DOWNLOAD</span><span class="tk-sep">✦</span><span>AN EVER EXPANDING COLLECTION</span><span class="tk-sep">✦</span><span>PLAY NOW</span><span class="tk-sep">✦</span></div><div class="ticker-seg" aria-hidden="true"><span>120+ SYSTEMS</span><span class="tk-sep">✦</span><span>THOUSANDS OF VIDEOGAMES</span><span class="tk-sep">✦</span><span>1000+ PINBALL TABLES</span><span class="tk-sep">✦</span><span>ARCADE · NINTENDO · SEGA · ATARI</span><span class="tk-sep">✦</span><span>VISUAL & FUTURE PINBALL</span><span class="tk-sep">✦</span><span>INSTANT DOWNLOAD</span><span class="tk-sep">✦</span><span>AN EVER EXPANDING COLLECTION</span><span class="tk-sep">✦</span><span>PLAY NOW</span><span class="tk-sep">✦</span></div></div></div>
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><div class="ticker-seg"><span>1000+ PINBALL TABLES</span><span class="tk-sep">✦</span><span>120+ SYSTEMS</span><span class="tk-sep">✦</span><span>THOUSANDS OF VIDEOGAMES</span><span class="tk-sep">✦</span><span>ARCADE · NINTENDO · SEGA · ATARI</span><span class="tk-sep">✦</span><span>VISUAL & FUTURE PINBALL</span><span class="tk-sep">✦</span><span>INSTANT DOWNLOAD</span><span class="tk-sep">✦</span><span>AN EVER EXPANDING COLLECTION</span><span class="tk-sep">✦</span><span>PLAY NOW</span><span class="tk-sep">✦</span></div><div class="ticker-seg" aria-hidden="true"><span>1000+ PINBALL TABLES</span><span class="tk-sep">✦</span><span>120+ SYSTEMS</span><span class="tk-sep">✦</span><span>THOUSANDS OF VIDEOGAMES</span><span class="tk-sep">✦</span><span>ARCADE · NINTENDO · SEGA · ATARI</span><span class="tk-sep">✦</span><span>VISUAL & FUTURE PINBALL</span><span class="tk-sep">✦</span><span>INSTANT DOWNLOAD</span><span class="tk-sep">✦</span><span>AN EVER EXPANDING COLLECTION</span><span class="tk-sep">✦</span><span>PLAY NOW</span><span class="tk-sep">✦</span></div></div></div>
 <header>
   <div class="wrap bar">
     <a class="brand" href="#top">
@@ -274,15 +274,14 @@
 <!-- Hero -->
 <div class="hero">
   <div class="wrap">
-    <div class="badge">THOUSANDS OF READY TO PLAY GAMES</div>
+    <div class="badge">1000+ READY-TO-PLAY PINBALL TABLES</div>
     <h1>DELUXE RETROGAMING</h1>
     <p class="lead">
-      Plug &amp; play master collections for <span class="hl-c">120+ systems</span> including
-      <span class="hl-g">Arcade, Nintendo, Sega and Atari</span> as well as
-      <span class="hl-p">Visual &amp; Future Pinball</span> setups. Let's play! &#x1F579;&#xFE0F;&#x1F4A5;
+      <span class="hl-p">Visual &amp; Future Pinball</span> tables, ready to play. Plus plug &amp; play collections for
+      <span class="hl-c">120+ systems</span> including <span class="hl-g">Arcade, Nintendo, Sega and Atari</span>. Let's play! &#x1F579;&#xFE0F;&#x1F4A5;
     </p>
     <div class="cta-row">
-      <a class="btn" href="#membership">SEE PLANS &mdash; FROM $10/MO</a>
+      <a class="btn" href="#membership">PLAY TODAY &mdash; FROM $10/MO</a>
       <a class="btn-ghost" href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">&#9654; WATCH IT IN ACTION</a>
     </div>
     <div class="trust">
@@ -300,37 +299,37 @@
   <div class="wrap">
     <h2>EXPLORE THE ARCHIVES</h2>
     <div class="grid">
-      <div class="card">
+      <div class="card" id="pinball" style="--accent:var(--pink)">
+        <span class="tag c-pink">PINBALL</span>
+        <h3>VISUAL &amp;<br>FUTURE PINBALL</h3>
+        <p>1000+ ready-to-play pinball tables, just download and play!</p>
+        <div class="foot"><span>Ready to play</span><a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">SEE TABLES &rarr;</a></div>
+      </div>
+      <div class="card" style="--accent:var(--cyan)">
         <span class="tag c-cyan">ARCADE</span>
         <h3>CLASSIC<br>ARCADE</h3>
         <p>Arcade cabinet collections, including shoot 'em ups, fighting games and beat 'em ups.</p>
         <div class="foot"><span>Pre-configured</span><a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">WATCH DEMO &rarr;</a></div>
       </div>
-      <div class="card" id="pinball">
-        <span class="tag c-pink">PINBALL</span>
-        <h3>VISUAL &amp;<br>FUTURE PINBALL</h3>
-        <p>Thousands of preconfigured pinball tables, just download and play!</p>
-        <div class="foot"><span>1000+ tables</span><a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">SEE TABLES &rarr;</a></div>
-      </div>
-      <div class="card">
+      <div class="card" style="--accent:var(--yellow)">
         <span class="tag c-yellow">CONSOLES</span>
         <h3>ATARI,<br>NINTENDO &amp; SEGA</h3>
         <p>Get instant access to thousands of games for every major console system.</p>
         <div class="foot"><span>120+ systems</span><a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">SEE IT RUNNING &rarr;</a></div>
       </div>
-      <div class="card">
+      <div class="card" style="--accent:#c58cff">
         <span class="tag c-purple">CD ERA</span>
         <h3>PLAYSTATION,<br>SATURN &amp; DREAMCAST</h3>
         <p>Disc-based classics with emulator setups and cover art.</p>
         <div class="foot"><span>Cover art included</span><a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">WATCH DEMO &rarr;</a></div>
       </div>
-      <div class="card">
+      <div class="card" style="--accent:var(--lime)">
         <span class="tag c-lime">HANDHELD</span>
         <h3>HANDHELD<br>DEVICES</h3>
         <p>Play the top handheld devices of all time right on your PC.</p>
         <div class="foot"><span>Ask first</span><a href="https://wa.me/5493513180654?text=Hi!%20Is%20my%20handheld%20supported%3F" target="_blank" rel="noopener">CHECK MY DEVICE &rarr;</a></div>
       </div>
-      <div class="card">
+      <div class="card" style="--accent:#4da3ff">
         <span class="tag c-blue">CONTROLLERS</span>
         <h3>CONTROLLERS &amp;<br>ARCADE STICKS</h3>
         <p>Any joystick or controller supported by Windows works.</p>
@@ -360,6 +359,11 @@
     <div class="showcase">
       <h2>WATCH IT IN ACTION</h2>
       <p>Watch the collections running before you subscribe. Walkthroughs, pinball tables and setups are on our YouTube channel.</p>
+      <div class="clips" id="clips" aria-label="Short gameplay clips">
+        <video src="clips/pinball-1.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <video src="clips/pinball-2.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <video src="clips/pinball-3.mp4" muted loop playsinline autoplay preload="auto"></video>
+      </div>
       <a class="btn" href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">&#9654; WATCH ON YOUTUBE</a>
       <!-- TODO (owner): add real social proof here when you have it, e.g.
            - 2-3 genuine member quotes (with permission), or screenshots of real messages
@@ -390,7 +394,7 @@
           <li><a href="https://wa.me/5493513180654" target="_blank" rel="noopener">WhatsApp</a> &amp; <a href="https://www.instagram.com/thegamearcadeok/" target="_blank" rel="noopener">Instagram</a> support</li>
           <li>Cancel anytime</li>
         </ul>
-        <a class="btn" href="https://buymeacoffee.com/thegamearcade/membership" target="_blank" rel="noopener">JOIN FOR $10/MO</a>
+        <a class="btn" href="https://buymeacoffee.com/thegamearcade/membership" target="_blank" rel="noopener">PLAY TODAY &mdash; $10/MO</a>
       </div>
       <div class="plan">
         <span class="tag c-pink">ONE-TIME</span>
@@ -404,7 +408,7 @@
           <li>Priority setup help</li>
         </ul>
         <!-- TODO (owner): both plan buttons currently open the same Buy Me a Coffee membership page. Link each to its own tier/product if you can. -->
-        <a class="btn" href="https://buymeacoffee.com/thegamearcade/membership" target="_blank" rel="noopener">GET LIFETIME ACCESS ($200)</a>
+        <a class="btn" href="https://buymeacoffee.com/thegamearcade/membership" target="_blank" rel="noopener">GO LIFETIME &mdash; $200</a>
       </div>
     </div>
     <p class="note">Questions? Message us on <a href="https://wa.me/5493513180654" target="_blank" rel="noopener">WhatsApp</a> or join our <a href="https://t.me/+BewKUdae5GtjMzdh" target="_blank" rel="noopener">Telegram</a> channel.</p>
@@ -535,6 +539,25 @@
   document.getElementById('consentDecline').addEventListener('click', function(){ choose('denied'); });
   document.getElementById('cookieSettings').addEventListener('click', function(){ box.classList.add('show'); });
   if (!get()) box.classList.add('show');
+})();
+</script>
+<script>
+(function(){
+  var box=document.getElementById('clips');
+  if(!box) return;
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function check(){
+    var vids=[].slice.call(box.querySelectorAll('video'));
+    vids.forEach(function(v){ if(v.error || v.networkState===3) v.remove(); });
+    var ok=[].slice.call(box.querySelectorAll('video')).filter(function(v){ return v.readyState>=2; });
+    if(ok.length){ box.classList.add('show'); if(reduce) ok.forEach(function(v){ v.pause(); }); }
+  }
+  [].forEach.call(box.querySelectorAll('video'), function(v){
+    v.addEventListener('loadeddata', check);
+    v.addEventListener('error', check);
+  });
+  window.addEventListener('load', check);
+  check();
 })();
 </script>
 <!-- Default Statcounter code for thegamearcade.top
