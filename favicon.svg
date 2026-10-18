@@ -1,0 +1,11 @@
+<!-- Save this SVG code as favicon.svg or favicon-32x32.svg in your repository -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#030007"/>
+  <rect x="2" y="2" width="28" height="28" rx="5" fill="none" stroke="#ff007f" stroke-width="2"/>
+  <!-- Arcade Joystick / Retro Controller Pixel Icon Motif -->
+  <circle cx="16" cy="12" r="5" fill="#ff007f"/>
+  <path d="M14 17h4v8h-4z" fill="#9333ea"/>
+  <circle cx="16" cy="9" r="2" fill="#ffffff"/>
+  <circle cx="9" cy="22" r="2" fill="#00ffff"/>
+  <circle cx="23" cy="22" r="2" fill="#eab308"/>
+</svg>
