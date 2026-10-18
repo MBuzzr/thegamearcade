@@ -105,6 +105,21 @@
 
   /* Systems */
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  /* archive cards: four equal-size boxes in a centered 2x2 grid */
+  #systems .grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; gap: 22px; max-width: 820px; margin: 0 auto; }
+  #systems .card h3 { line-height: 1.1; min-height: 2.2em; }
+  #systems .card { --accent: var(--cyan); position: relative; overflow: hidden; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  #systems .card:nth-child(2) { --accent: var(--pink); }
+  #systems .card:nth-child(3) { --accent: var(--yellow); }
+  #systems .card:nth-child(4) { --accent: #c58cff; }
+  #systems .card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+  #systems .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 0 30px color-mix(in srgb, var(--accent) 8%, transparent); }
+  #systems .foot a { color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { #systems .card, #systems .card:hover { transition: none; transform: none; } }
+  @media (max-width: 620px) {
+    #systems .grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    #systems .card h3 { min-height: 0; }
+  }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
   .card h3 { font-weight: normal; font-size: 30px; color: #fff; }
   .card p { color: var(--muted); font-size: 21px; }
@@ -305,18 +320,6 @@
         <h3>PLAYSTATION, SATURN &amp; DREAMCAST</h3>
         <p>Disc-based classics with emulator setups and cover art.</p>
         <div class="foot"><span>Cover art included</span><a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">WATCH DEMO &rarr;</a></div>
-      </div>
-      <div class="card">
-        <span class="tag c-lime">HANDHELD</span>
-        <h3>HANDHELD COLLECTIONS</h3>
-        <p>Collections for handheld devices. Message us before you buy to confirm your device is supported.</p>
-        <div class="foot"><span>Ask first</span><a href="https://wa.me/5493513180654?text=Hi!%20Is%20my%20handheld%20supported%3F" target="_blank" rel="noopener">CHECK MY DEVICE &rarr;</a></div>
-      </div>
-      <div class="card">
-        <span class="tag c-pink">SUPPORT</span>
-        <h3>HELP WHEN YOU NEED IT</h3>
-        <p>Members can message us on <a href="https://wa.me/5493513180654" target="_blank" rel="noopener">WhatsApp</a> or <a href="https://www.instagram.com/thegamearcadeok/" target="_blank" rel="noopener">Instagram</a> for setup help.</p>
-        <div class="foot"><span>Members</span><a href="https://wa.me/5493513180654" target="_blank" rel="noopener">MESSAGE US &rarr;</a></div>
       </div>
     </div>
   </div>
