@@ -33,8 +33,8 @@
   html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   body {
     background: linear-gradient(rgba(7,4,15,0.82), rgba(7,4,15,0.82)), var(--bgimg) center / cover fixed var(--bg); color: var(--text);
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 17px; line-height: 1.6;
+    font-family: 'VT323', 'Courier New', monospace;
+    font-size: 22px; line-height: 1.5; letter-spacing: 0.5px;
     overflow-x: hidden;
   }
   /* very faint scanlines, for flavour only */
@@ -139,11 +139,10 @@
 
   /* ---------- Typography: VT323 for headings / UI, readable sans for body copy ---------- */
   h1, h2, h3, .brand, .desk a, .menu summary, .drop a, .badge, .btn, .btn-ghost, .tag, .foot, .price, .faq summary, .ticker, .step-n, .skip { font-family: 'VT323', 'Courier New', monospace; letter-spacing: 0.5px; }
-  .sub { font-size: 19px; }
-  .lead { font-size: clamp(18px, 2.2vw, 21px); }
-  .card p, .plan p, .plan ul, .faq p, .community p, .step p, .note, .coffee, .fine { font-size: 17px; }
-  .foot { font-size: 20px; }
-  .note, .coffee { font-size: 16px; }
+  .sub { font-size: 24px; }
+  .card p, .plan p, .plan ul, .faq p, .community p, .step p, .fine { font-size: 21px; }
+  .note, .coffee { font-size: 20px; }
+  .trust { font-size: 20px; }
 
   /* ---------- Accessibility ---------- */
   :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
@@ -158,7 +157,7 @@
 
   /* ---------- New: hero extras, how it works, showcase, plans ---------- */
   .cta-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center; }
-  .trust { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; margin-top: 22px; color: var(--muted); font-size: 16px; }
+  .trust { display: flex; flex-wrap: wrap; gap: 8px 22px; justify-content: center; margin-top: 22px; color: var(--muted); }
   .trust span::before { content: "\2713  "; color: var(--lime); }
   #how { padding-top: 40px; padding-bottom: 24px; }
   .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; counter-reset: step; }
@@ -176,7 +175,7 @@
   .links-row a { color: var(--cyan); text-decoration: none; }
   .links-row a:hover { text-decoration: underline; }
   @media (max-width: 420px) { .brand { font-size: 26px; gap: 8px; } .brand svg { width: 28px; height: 28px; } .bar { gap: 8px; } }
-  .legal { max-width: 720px; margin: 14px auto 0; font-size: 14px; opacity: .8; }</style>
+  .legal { max-width: 720px; margin: 14px auto 0; font-size: 18px; opacity: .8; }</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="alien" viewBox="0 0 11 8" shape-rendering="crispEdges" fill="#39ff14"><rect x="2" y="0" width="1" height="1"/><rect x="8" y="0" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/><rect x="8" y="2" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="4" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="6" y="3" width="1" height="1"/><rect x="8" y="3" width="1" height="1"/><rect x="9" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="6" y="4" width="1" height="1"/><rect x="7" y="4" width="1" height="1"/><rect x="8" y="4" width="1" height="1"/><rect x="9" y="4" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/><rect x="6" y="5" width="1" height="1"/><rect x="7" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="10" y="5" width="1" height="1"/><rect x="0" y="6" width="1" height="1"/><rect x="2" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/><rect x="3" y="7" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/><rect x="6" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/></symbol></svg>
