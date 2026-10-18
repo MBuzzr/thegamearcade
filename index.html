@@ -6,6 +6,16 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  // Consent Mode v2: everything denied until the visitor accepts
+  gtag('consent', 'default', {
+    'ad_storage': 'denied', 'ad_user_data': 'denied', 'ad_personalization': 'denied',
+    'analytics_storage': 'denied'
+  });
+  try {
+    if (localStorage.getItem('tga_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
   gtag('js', new Date());
 
   gtag('config', 'G-C4N45T0413');
@@ -187,6 +197,18 @@
   /* footer joystick blink (retro on/off) */
   .blink-joystick { animation: footjoyblink 1.2s step-end infinite !important; }
   @keyframes footjoyblink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  /* cookie consent banner */
+  .consent { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 300; max-width: 720px; margin: 0 auto; background: var(--panel); border: 1px solid var(--cyan); border-radius: 10px; padding: 16px 18px; box-shadow: 0 0 24px rgba(0,240,255,0.25); display: none; }
+  .consent.show { display: block; }
+  .consent p { font-size: 20px; line-height: 1.35; margin-bottom: 12px; }
+  .consent-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .consent button { font-family: inherit; font-size: 22px; padding: 6px 20px; border-radius: 8px; cursor: pointer; border: 1px solid var(--cyan); }
+  .consent .c-accept { background: var(--pink); border-color: var(--pink); color: #fff; }
+  .consent .c-accept:hover { background: #ff5aa0; }
+  .consent .c-decline { background: transparent; color: var(--cyan); }
+  .consent .c-decline:hover { background: rgba(0,240,255,0.08); }
+  .link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--cyan); cursor: pointer; }
+  .link-btn:hover { text-decoration: underline; }
   .legal { max-width: 720px; margin: 14px auto 0; font-size: 18px; opacity: .8; }
   /* keep text crisp over the busy background image */
   h1, h2, .lead, .sub, .note, .coffee, .trust, footer { text-shadow: 0 2px 10px rgba(7,4,15,0.95), 0 0 2px rgba(7,4,15,0.9); }</style>
@@ -449,6 +471,7 @@
     <a href="https://www.facebook.com/thegamearcadeok" target="_blank" rel="noopener">Facebook</a>
     <a href="https://www.tiktok.com/@thegamearcade72" target="_blank" rel="noopener">TikTok</a>
     <a href="https://buymeacoffee.com/thegamearcade" target="_blank" rel="noopener">Buy me a coffee</a>
+    <button type="button" class="link-btn" id="cookieSettings">Cookie settings</button>
     <!-- TODO (owner): add links to Terms of Service and Privacy Policy pages once they exist, ideally written with legal advice. -->
   </div>
   <div>&copy; 2026 TheGameArcade. Insert coin. Let's play.</div>
@@ -465,5 +488,54 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') menu.removeAttribute('open'); });
   })();
 </script>
+<div class="consent" id="consent" role="dialog" aria-live="polite" aria-label="Cookie consent">
+  <p>We use cookies for anonymous visit statistics (Google Analytics) to see how the site is used. You can accept or decline. Nothing is tracked unless you accept.</p>
+  <div class="consent-btns">
+    <button type="button" class="c-accept" id="consentAccept">ACCEPT</button>
+    <button type="button" class="c-decline" id="consentDecline">DECLINE</button>
+  </div>
+</div>
+<script>
+(function(){
+  var box=document.getElementById('consent');
+  function get(){ try { return localStorage.getItem('tga_consent'); } catch(e){ return null; } }
+  function set(v){ try { localStorage.setItem('tga_consent', v); } catch(e){} }
+  function apply(v){
+    gtag('consent','update',{ 'analytics_storage': v==='granted' ? 'granted' : 'denied' });
+    if (v!=='granted') {
+      // clear any Google Analytics cookies already set
+      document.cookie.split(';').forEach(function(c){
+        var n=c.split('=')[0].trim();
+        if (n==='_ga' || n.indexOf('_ga_')===0) {
+          document.cookie=n+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+          document.cookie=n+'=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.'+location.hostname;
+        }
+      });
+    }
+  }
+  function choose(v){ set(v); apply(v); box.classList.remove('show'); }
+  document.getElementById('consentAccept').addEventListener('click', function(){ choose('granted'); });
+  document.getElementById('consentDecline').addEventListener('click', function(){ choose('denied'); });
+  document.getElementById('cookieSettings').addEventListener('click', function(){ box.classList.add('show'); });
+  if (!get()) box.classList.add('show');
+})();
+</script>
+<!-- Default Statcounter code for thegamearcade.top
+https://thegamearcade.top -->
+<script type="text/javascript">
+var sc_project=13360675; 
+var sc_invisible=1; 
+var sc_security="e4118f07"; 
+</script>
+<script type="text/javascript"
+src="https://www.statcounter.com/counter/counter.js"
+async></script>
+<noscript><div class="statcounter"><a title="web counter"
+href="https://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="https://c.statcounter.com/13360675/0/e4118f07/1/"
+alt="web counter"
+referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+<!-- End of Statcounter Code -->
 </body>
 </html>
