@@ -383,19 +383,19 @@
       <p>See the collections running before you join. Walkthroughs, pinball tables and setups are on our YouTube channel.</p>
       <div class="vgrid" id="vgrid">
         <figure class="vbox">
-          <video src="clips/pinball-1.mp4" poster="clips/pinball-1.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 1"></video>
+          <video src="pinball-1.mp4" poster="pinball-1.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 1"></video>
           <span class="vtag">PINBALL 01</span>
         </figure>
         <figure class="vbox">
-          <video src="clips/pinball-2.mp4" poster="clips/pinball-2.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 2"></video>
+          <video src="pinball-2.mp4" poster="pinball-2.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 2"></video>
           <span class="vtag">PINBALL 02</span>
         </figure>
         <figure class="vbox">
-          <video src="clips/pinball-3.mp4" poster="clips/pinball-3.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 3"></video>
+          <video src="pinball-3.mp4" poster="pinball-3.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 3"></video>
           <span class="vtag">PINBALL 03</span>
         </figure>
         <figure class="vbox">
-          <video src="clips/pinball-4.mp4" poster="clips/pinball-4.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 4"></video>
+          <video src="pinball-4.mp4" poster="pinball-4.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 4"></video>
           <span class="vtag">PINBALL 04</span>
         </figure>
       </div>
@@ -583,16 +583,22 @@
 <script>
 (function(){
   var vids=[].slice.call(document.querySelectorAll('#vgrid video'));
-  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  vids.forEach(function(v){
-    v.muted=true;
-    if(reduce){ v.pause(); return; }
+  function start(v){
+    v.muted=true; v.loop=true;
     var p=v.play(); if(p && p.catch) p.catch(function(){});
+  }
+  vids.forEach(function(v){
+    start(v);
+    // if the browser was still buffering, start again once data arrives
+    v.addEventListener('canplay', function(){ if(v.paused) start(v); });
   });
-  // only play while on screen (saves bandwidth and battery)
-  if('IntersectionObserver' in window && !reduce){
+  // pause off-screen clips to save bandwidth, resume when they scroll back into view
+  if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ var v=e.target; if(e.isIntersecting){ var p=v.play(); if(p&&p.catch)p.catch(function(){}); } else { v.pause(); } });
+      es.forEach(function(e){
+        var v=e.target;
+        if(e.isIntersecting){ start(v); } else { v.pause(); }
+      });
     },{threshold:0.25});
     vids.forEach(function(v){ io.observe(v); });
   }
