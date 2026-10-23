@@ -241,6 +241,10 @@
   .vbox:nth-child(2) { --accent: var(--pink); }
   .vbox:nth-child(3) { --accent: var(--yellow); }
   .vbox:nth-child(4) { --accent: #c58cff; }
+  #vgrid2 .vbox:nth-child(1) { --accent: var(--lime); }
+  #vgrid2 .vbox:nth-child(2) { --accent: var(--yellow); }
+  #vgrid2 .vbox:nth-child(3) { --accent: var(--pink); }
+  #vgrid2 .vbox:nth-child(4) { --accent: var(--cyan); }
   .vbox:hover { transform: translateY(-4px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 55%, transparent); }
   .vbox video { display: block; width: 100%; height: 100%; object-fit: cover; }
   .vbox::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 40px rgba(7,4,15,0.55); border-radius: inherit; }
@@ -393,6 +397,20 @@
         </figure>
         <figure class="vbox">
           <video src="pinball-4.mp4" poster="pinball-4.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 4"></video>
+        </figure>
+      </div>
+      <div class="vgrid vgrid-more" id="vgrid2">
+        <figure class="vbox">
+          <video src="pac-man.mp4" poster="pac-man.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pac-Man gameplay clip"></video>
+        </figure>
+        <figure class="vbox">
+          <video src="street-fighter-2.mp4" poster="street-fighter-2.jpg" muted loop playsinline autoplay preload="auto" aria-label="Street Fighter II gameplay clip"></video>
+        </figure>
+        <figure class="vbox">
+          <video src="metal-slug-2.mp4" poster="metal-slug-2.jpg" muted loop playsinline autoplay preload="auto" aria-label="Metal Slug 2 gameplay clip"></video>
+        </figure>
+        <figure class="vbox">
+          <video src="mega-man-2.mp4" poster="mega-man-2.jpg" muted loop playsinline autoplay preload="auto" aria-label="Mega Man 2 gameplay clip"></video>
         </figure>
       </div>
       <a class="btn" href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">&#9654; WATCH ON YOUTUBE</a>
@@ -578,7 +596,7 @@
 </script>
 <script>
 (function(){
-  var vids=[].slice.call(document.querySelectorAll('#vgrid video'));
+  var vids=[].slice.call(document.querySelectorAll('#vgrid video, #vgrid2 video'));
   function start(v){
     v.muted=true; v.loop=true;
     var p=v.play(); if(p && p.catch) p.catch(function(){});
