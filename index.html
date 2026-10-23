@@ -234,11 +234,19 @@
   .banner img { display: block; width: 100%; height: auto; }
   .banner:hover { transform: translateY(-3px); box-shadow: 0 0 34px rgba(255,42,138,0.45); }
   @media (prefers-reduced-motion: reduce) { .banner, .banner:hover { transition: none; transform: none; } }
-  /* short gameplay clips (shown only when the clip files exist) */
-  .clips { display: none; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 760px; margin: 0 auto 28px; }
-  .clips.show { display: grid; }
-  .clips video { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; background: #000; border: 1px solid var(--cyan); border-radius: 10px; box-shadow: 0 0 18px rgba(0,240,255,0.25); }
-  @media (max-width: 620px) { .clips { grid-template-columns: 1fr; } }
+  /* gameplay video boxes */
+  .vgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 900px; margin: 0 auto 32px; }
+  .vbox { position: relative; margin: 0; border-radius: 14px; overflow: hidden; background: #000; border: 1px solid var(--accent, var(--cyan)); box-shadow: 0 0 22px color-mix(in srgb, var(--accent, var(--cyan)) 35%, transparent); aspect-ratio: 16 / 9; transition: transform .2s ease, box-shadow .2s ease; }
+  .vbox:nth-child(1) { --accent: var(--cyan); }
+  .vbox:nth-child(2) { --accent: var(--pink); }
+  .vbox:nth-child(3) { --accent: var(--yellow); }
+  .vbox:nth-child(4) { --accent: #c58cff; }
+  .vbox:hover { transform: translateY(-4px); box-shadow: 0 0 34px color-mix(in srgb, var(--accent) 55%, transparent); }
+  .vbox video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .vbox::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 40px rgba(7,4,15,0.55); border-radius: inherit; }
+  .vtag { position: absolute; left: 12px; bottom: 12px; z-index: 2; font-size: 16px; letter-spacing: 1px; color: var(--accent); background: rgba(7,4,15,0.78); border: 1px solid var(--accent); border-radius: 6px; padding: 3px 10px; text-shadow: none; }
+  @media (max-width: 620px) { .vgrid { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .vbox, .vbox:hover { transition: none; transform: none; } }
   .legal { max-width: 720px; margin: 14px auto 0; font-size: 18px; opacity: .8; }
   /* keep text crisp over the busy background image */
   h1, h2, .lead, .sub, .note, .coffee, .trust, footer { text-shadow: 0 2px 10px rgba(7,4,15,0.95), 0 0 2px rgba(7,4,15,0.9); }</style>
@@ -373,10 +381,23 @@
     <div class="showcase">
       <h2>WATCH IT IN ACTION</h2>
       <p>See the collections running before you join. Walkthroughs, pinball tables and setups are on our YouTube channel.</p>
-      <div class="clips" id="clips" aria-label="Short gameplay clips">
-        <video src="clips/pinball-1.mp4" muted loop playsinline autoplay preload="auto"></video>
-        <video src="clips/pinball-2.mp4" muted loop playsinline autoplay preload="auto"></video>
-        <video src="clips/pinball-3.mp4" muted loop playsinline autoplay preload="auto"></video>
+      <div class="vgrid" id="vgrid">
+        <figure class="vbox">
+          <video src="clips/pinball-1.mp4" poster="clips/pinball-1.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 1"></video>
+          <span class="vtag">PINBALL 01</span>
+        </figure>
+        <figure class="vbox">
+          <video src="clips/pinball-2.mp4" poster="clips/pinball-2.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 2"></video>
+          <span class="vtag">PINBALL 02</span>
+        </figure>
+        <figure class="vbox">
+          <video src="clips/pinball-3.mp4" poster="clips/pinball-3.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 3"></video>
+          <span class="vtag">PINBALL 03</span>
+        </figure>
+        <figure class="vbox">
+          <video src="clips/pinball-4.mp4" poster="clips/pinball-4.jpg" muted loop playsinline autoplay preload="auto" aria-label="Pinball gameplay clip 4"></video>
+          <span class="vtag">PINBALL 04</span>
+        </figure>
       </div>
       <a class="btn" href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">&#9654; WATCH ON YOUTUBE</a>
       <!-- TODO (owner): add real social proof here when you have it, e.g.
@@ -561,21 +582,20 @@
 </script>
 <script>
 (function(){
-  var box=document.getElementById('clips');
-  if(!box) return;
+  var vids=[].slice.call(document.querySelectorAll('#vgrid video'));
   var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function check(){
-    var vids=[].slice.call(box.querySelectorAll('video'));
-    vids.forEach(function(v){ if(v.error || v.networkState===3) v.remove(); });
-    var ok=[].slice.call(box.querySelectorAll('video')).filter(function(v){ return v.readyState>=2; });
-    if(ok.length){ box.classList.add('show'); if(reduce) ok.forEach(function(v){ v.pause(); }); }
-  }
-  [].forEach.call(box.querySelectorAll('video'), function(v){
-    v.addEventListener('loadeddata', check);
-    v.addEventListener('error', check);
+  vids.forEach(function(v){
+    v.muted=true;
+    if(reduce){ v.pause(); return; }
+    var p=v.play(); if(p && p.catch) p.catch(function(){});
   });
-  window.addEventListener('load', check);
-  check();
+  // only play while on screen (saves bandwidth and battery)
+  if('IntersectionObserver' in window && !reduce){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ var v=e.target; if(e.isIntersecting){ var p=v.play(); if(p&&p.catch)p.catch(function(){}); } else { v.pause(); } });
+    },{threshold:0.25});
+    vids.forEach(function(v){ io.observe(v); });
+  }
 })();
 </script>
 <!-- Default Statcounter code for thegamearcade.top
