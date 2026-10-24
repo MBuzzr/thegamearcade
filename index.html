@@ -342,9 +342,21 @@
     text-shadow: 0 0 4px #fff, 0 0 12px var(--lime), 0 0 28px rgba(57,255,20,.5), 0 2px 10px rgba(7,4,15,.95);
   }
   .subscribe-box p.sub { margin-bottom: 28px; }
-  .perks { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 28px; margin: 0 0 40px; font-size: 24px; }
-  .perks li::before { content: "\25B6  "; color: var(--pink); text-shadow: 0 0 8px var(--pink); }
+  .perks { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 640px; margin: 0 auto 40px; font-size: 24px; text-align: left; }
+  .perks li { border: 1px solid var(--cyan); background: rgba(0,240,255,.05); padding: 10px 16px; box-shadow: inset 3px 0 0 var(--pink), 0 0 12px rgba(0,240,255,.15); }
+  @media (max-width: 480px) { .perks { grid-template-columns: 1fr; } }
+  .perks li::before { content: ""; display: inline-block; width: 22px; height: 22px; margin-right: 12px; vertical-align: -4px; background: center / contain no-repeat; image-rendering: pixelated; }
+  .perks li:nth-child(1)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='4' height='1' fill='%23ffe81a'/%3E%3Crect x='1' y='1' width='6' height='1' fill='%23ffe81a'/%3E%3Crect x='0' y='2' width='8' height='4' fill='%23ffe81a'/%3E%3Crect x='1' y='6' width='6' height='1' fill='%23ffe81a'/%3E%3Crect x='2' y='7' width='4' height='1' fill='%23ffe81a'/%3E%3Crect x='3' y='2' width='2' height='4' fill='%23b8860b'/%3E%3C/svg%3E"); }
+  .perks li:nth-child(2)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='0' y='0' width='8' height='6' fill='%234da3ff'/%3E%3Crect x='1' y='1' width='6' height='4' fill='%23120b22'/%3E%3Crect x='3' y='6' width='2' height='1' fill='%234da3ff'/%3E%3Crect x='2' y='7' width='4' height='1' fill='%234da3ff'/%3E%3C/svg%3E"); }
+  .perks li:nth-child(3)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='3' y='0' width='2' height='4' fill='%23ff2e88'/%3E%3Crect x='1' y='4' width='6' height='2' fill='%23ff2e88'/%3E%3Crect x='2' y='6' width='4' height='2' fill='%23ffe81a'/%3E%3C/svg%3E"); }
+  .perks li:nth-child(4)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='3' y='0' width='2' height='2' fill='%2339ff14'/%3E%3Crect x='0' y='2' width='8' height='2' fill='%2339ff14'/%3E%3Crect x='2' y='4' width='4' height='2' fill='%2339ff14'/%3E%3Crect x='1' y='6' width='2' height='2' fill='%2339ff14'/%3E%3Crect x='5' y='6' width='2' height='2' fill='%2339ff14'/%3E%3C/svg%3E"); }
   .subscribe-box .btn { font-size: 28px; padding: 16px 32px; }
+  .press-start { font-family: 'VT323', 'Courier New', monospace; font-size: 24px; letter-spacing: 4px; color: var(--yellow); text-shadow: 0 0 8px rgba(255,232,26,.7); margin: 0 0 14px; animation: blinkstart 1s step-end infinite; }
+  @keyframes blinkstart { 50% { opacity: 0; } }
+  .plan .price::after { content: ""; display: none; width: 28px; height: 28px; margin-left: 12px; vertical-align: middle; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='4' height='1' fill='%23ffe81a'/%3E%3Crect x='1' y='1' width='6' height='1' fill='%23ffe81a'/%3E%3Crect x='0' y='2' width='8' height='4' fill='%23ffe81a'/%3E%3Crect x='1' y='6' width='6' height='1' fill='%23ffe81a'/%3E%3Crect x='2' y='7' width='4' height='1' fill='%23ffe81a'/%3E%3Crect x='3' y='2' width='2' height='4' fill='%23b8860b'/%3E%3C/svg%3E") center / contain no-repeat; image-rendering: pixelated; }
+  .plan:hover .price::after { display: inline-block; animation: coindrop .9s cubic-bezier(.3,.6,.4,1) both; }
+  @keyframes coindrop { 0% { transform: translateY(-46px); opacity: 0; } 60% { transform: translateY(4px); opacity: 1; } 80% { transform: translateY(-6px); } 100% { transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .press-start, .plan:hover .price::after { animation: none !important; } }
   @media (max-width: 560px) { .subscribe-box { padding: 44px 20px; } }
 
   /* scroll reveal: content stays visible if JS is off or motion is reduced */
@@ -552,11 +564,12 @@
       <h2>SUBSCRIBE &amp; NEVER MISS A DROP</h2>
       <p class="sub">Subscribe on YouTube to catch every new table and gameplay upload. Want the whole library? Unlock it from $10/month, or pay $200 once for lifetime access.</p>
       <ul class="perks">
-        <li>New pinball tables</li>
-        <li>Gameplay &amp; setup walkthroughs</li>
-        <li>Emulator tips</li>
-        <li>Vote on what we add next</li>
+        <li>New pinball tables as they drop</li>
+        <li>See it running before you play</li>
+        <li>Emulator tips &amp; setup help</li>
+        <li>Your vote picks what we add next</li>
       </ul>
+      <p class="press-start">PRESS START</p>
       <div class="cta-row">
         <a class="btn" href="https://www.youtube.com/@TheGameArcadeOk?sub_confirmation=1" target="_blank" rel="noopener">&#9654; SUBSCRIBE ON YOUTUBE</a>
         <a class="btn-ghost" href="#membership">UNLOCK THE LIBRARY &rarr;</a>
