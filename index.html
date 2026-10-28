@@ -378,6 +378,16 @@
     .step, .plan { transition: none; }
     .step:hover, .plan:hover { transform: none; }
   }
+
+  /* merch teaser */
+  .merch { text-align: center; border: 2px solid var(--yellow); background: var(--panel); padding: 44px 28px; max-width: 900px; margin: 0 auto; box-shadow: 0 0 30px rgba(255,232,26,.25), inset 0 0 40px rgba(255,232,26,.05); position: relative; }
+  .merch .badge { border-color: var(--pink); color: var(--pink); box-shadow: 0 0 12px rgba(255,46,136,.45); margin-bottom: 16px; }
+  .merch h2 { color: var(--yellow); text-shadow: 0 0 4px #fff, 0 0 14px var(--yellow), 0 0 28px rgba(255,232,26,.5), 0 2px 10px rgba(7,4,15,.95); margin-bottom: 14px; }
+  .merch p { color: var(--muted); font-size: 22px; max-width: 620px; margin: 0 auto 26px; }
+  .merch .btn { font-size: 28px; padding: 16px 34px; background: var(--yellow); color: #000; box-shadow: 0 0 18px rgba(255,232,26,.6); }
+  .merch .btn:hover { background: #fff27a; }
+  .merch .fine { color: var(--muted); font-size: 18px; margin: 18px auto 0; text-align: center; opacity: .85; }
+  @media (prefers-reduced-motion: reduce) { .merch .btn::after { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -664,6 +674,19 @@
         <summary>How often is the library updated?</summary>
         <p>New additions are added as they're ready. Follow us on <a href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">YouTube</a> and <a href="https://www.instagram.com/thegamearcadeok/" target="_blank" rel="noopener">Instagram</a> to see what's new.</p>
       </details>
+    </div>
+  </div>
+</section>
+
+<!-- Merch -->
+<section id="merch">
+  <div class="wrap">
+    <div class="merch">
+      <span class="badge">OFFICIAL TGA GEAR</span>
+      <h2>WEAR THE GAME. POWER THE ARCADE.</h2>
+      <p>Rep the arcade with our branded tee. Every shirt helps us keep the games coming: new systems, new pinball tables and more nights of pixels for the whole crew.</p>
+      <a class="btn" href="https://app.amazecommerce.com/shop/thegamearcade" target="_blank" rel="noopener">GET YOUR TEE</a>
+      <p class="fine">Secure checkout through our store. Every purchase supports TheGameArcade.</p>
     </div>
   </div>
 </section>
