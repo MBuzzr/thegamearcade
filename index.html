@@ -817,5 +817,52 @@ referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
   els.forEach(function(el){ io.observe(el); });
 })();
 </script>
+
+
+<!-- Botón Flotante de WhatsApp -->
+<a href="https://wa.me/5493513180654?text=Hi,%20I'd%20like%20more%20information." 
+   class="whatsapp-float" 
+   target="_blank" 
+   rel="noopener noreferrer"
+   aria-label="Contacto">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="whatsapp-icon">
+        <path fill="#FFF" d="M16.02 0C7.172 0 0 7.172 0 16.02c0 2.827.74 5.518 2.03 7.857L0 32l8.344-2.003a15.908 15.908 0 007.676 1.956c8.848 0 16.02-7.172 16.02-16.02C32 7.172 24.868 0 16.02 0zm9.333 22.68c-.392 1.1-1.95 2.015-3.195 2.284-1.246.268-2.825.483-8.216-1.742-6.953-2.87-11.47-9.948-11.815-10.413-.346-.464-2.823-3.76-2.823-7.175 0-3.415 1.785-5.097 2.42-5.787.636-.69 1.385-.865 1.847-.865.462 0 .924.004 1.326.02.425.016.994-.162 1.554 1.173.56 1.336 1.91 4.67 2.077 5.011.166.341.277.74.047 1.189-.23.45-.346.636-.692 1.04-.346.403-.728.895-1.04 1.2-.346.346-.71.722-.307 1.413.403.692 1.785 2.95 3.832 4.778 2.635 2.348 4.856 3.076 5.547 3.422.692.346 1.097.288 1.5-.173.403-.462 1.733-2.018 2.193-2.71.462-.692.924-.577 1.558-.346.635.231 4.026 1.897 4.718 2.243.692.346 1.155.52 1.326.808.173.288.173 1.678-.219 2.778z"/>
+    </svg>
+</a>
+
+<style>
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.whatsapp-float:hover {
+    background-color: #20ba5a;
+    transform: scale(1.1);
+}
+.whatsapp-icon {
+    width: 35px;
+    height: 35px;
+}
+</style>
+
+
+
+
+
+
 </body>
 </html>
