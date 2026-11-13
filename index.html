@@ -104,8 +104,6 @@
   .btn:hover { background: #ff5aa0; }
   .btn-ghost { display: inline-block; border: 1px solid var(--cyan); color: var(--cyan); padding: 12px 24px; font-size: 24px; text-decoration: none; border-radius: 8px; }
   .btn-ghost:hover { background: rgba(0,240,255,0.08); }
-  .btn-discord { display: inline-block; background: #5865F2; color: #fff; padding: 14px 30px; font-size: 26px; text-decoration: none; border-radius: 8px; font-family: 'VT323', 'Courier New', monospace; letter-spacing: 0.5px; }
-  .btn-discord:hover { background: #6f7bf7; }
 
   /* Systems */
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
@@ -301,7 +299,7 @@
   }
 
   /* square pixel buttons with glow and a shine sweep */
-  .btn, .btn-ghost, .btn-discord { border-radius: 0; position: relative; overflow: hidden; letter-spacing: 1px; }
+  .btn, .btn-ghost { border-radius: 0; position: relative; overflow: hidden; letter-spacing: 1px; }
   .btn { box-shadow: 0 0 14px rgba(255,46,136,.5); animation: btnglow 2.4s ease-in-out infinite; }
   .btn:hover { animation: none; box-shadow: 0 0 30px rgba(255,46,136,.9); }
   .btn::after {
@@ -313,7 +311,6 @@
   @keyframes sheen { 0%, 55% { left: -75%; } 100% { left: 135%; } }
   .btn-ghost { box-shadow: 0 0 10px rgba(0,240,255,.25); }
   .btn-ghost:hover { box-shadow: 0 0 22px rgba(0,240,255,.6); }
-  .btn-discord { box-shadow: 0 0 14px rgba(88,101,242,.55); }
 
   /* pixel-square cards with neon hover */
   .card, .step, .plan, .showcase, .community { border-radius: 0; }
@@ -450,7 +447,6 @@
         <a href="#membership">Pricing</a>
         <a href="#faq">FAQ</a>
         <a href="#community">Community</a>
-        <a href="https://discord.gg/JthCXA5r7" target="_blank" rel="noopener">Discord</a>
       </nav>
     </details>
   </div>
@@ -597,7 +593,6 @@
       <div class="cta-row">
         <a class="btn" href="https://buymeacoffee.com/thegamearcade/membership" target="_blank" rel="noopener">&#9654; JOIN NOW</a>
         <a class="btn-ghost" href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">WATCH ON YOUTUBE</a>
-        <a class="btn-discord" href="https://discord.gg/JthCXA5r7" target="_blank" rel="noopener">JOIN OUR DISCORD</a>
       </div>
       <!-- TODO (owner): add real social proof here when you have it, e.g.
            - 2-3 genuine member quotes (with permission), or screenshots of real messages
@@ -739,8 +734,7 @@
   <div class="wrap">
     <div class="community">
       <h2>JOIN THE COMMUNITY</h2>
-      <p>Follow us for showcase videos, new table drops and emulator tips. Join our Discord to request games and pinball tables, and vote on what we add next.</p>
-      <p><a class="btn-discord" href="https://discord.gg/JthCXA5r7" target="_blank" rel="noopener">JOIN OUR DISCORD</a></p>
+      <p>Follow us for showcase videos, new table drops and emulator tips.</p>
       <div class="socials">
         <a class="btn-ghost" href="https://www.youtube.com/@TheGameArcadeOk" target="_blank" rel="noopener">YOUTUBE</a>
         <a class="btn-ghost" href="https://www.instagram.com/thegamearcadeok/" target="_blank" rel="noopener">INSTAGRAM</a>
