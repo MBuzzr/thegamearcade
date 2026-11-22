@@ -396,7 +396,8 @@
   .ticker:hover { background: #120b22; }
   .ticker-group { display: flex; flex-shrink: 0; }
   .ticker-track { width: auto; animation-duration: 80s; }
-  .ticker .tk-trial { color: var(--lime); text-shadow: 0 0 8px rgba(57,255,20,.7); }
+  .ticker .ticker-seg > span:not(.tk-sep):nth-child(4n+1) { color: var(--lime); text-shadow: 0 0 8px rgba(57,255,20,.7); }
+  .ticker .ticker-seg > span:not(.tk-sep):nth-child(4n+3) { color: var(--cyan); text-shadow: 0 0 8px rgba(0,240,255,.7); }
   .headline {
     font-family: 'VT323', 'Courier New', monospace; font-weight: normal;
     font-size: clamp(42px, 6vw, 68px); line-height: 1.02; color: #fff; text-align: center;
